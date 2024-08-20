@@ -1,12 +1,36 @@
-import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 
-export const useCounterStore = defineStore("counter", () => {
-  const count = ref(0);
-  const doubleCount = computed(() => count.value * 2);
-  function increment() {
-    count.value++;
-  }
+export const myStore = defineStore("myStore", {
+  state() {
+    return {
+      token: "",
+      username: "",
 
-  return { count, doubleCount, increment };
+      animes: [],
+    };
+  },
+  getters: {
+
+  },
+  actions: {
+    ajoutToken(token) {
+      this.token = token;
+    },
+    removeToken() {
+      this.token = "";
+    },
+  },
+
+});
+
+export const HistoryStore = defineStore("HistoryStore", {
+  state() {
+    return {
+      history: [],
+    };
+  },
+  getters: {
+  },
+  actions: {
+  },
 });
