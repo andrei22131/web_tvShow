@@ -33,17 +33,16 @@
       </div>
     </div>
   </div>
-
-  <div class="section">
-    <nav class="panel">
-      <p class="panel-heading">
+  <div class="section genre-panel">
+    <nav class="panel genre-panel-container">
+      <p class="panel-heading genre-panel-heading">
         Genres
       </p>
-      <div class="columns is-variable is-multiline " v-if="genres !== null">
-        <div class="column is-2-desktop" v-for="g in genres" v-bind:key="g.genreId">
-          <label class="checkbox">
-            <input class="dad" type="checkbox" v-model="filtresGenres" v-bind:value="g.genreId" :aria-required="true">
-            <b>{{ g.name }}</b>
+      <div class="columns is-variable is-multiline" v-if="genres !== null">
+        <div class="column is-2-desktop genre-checkbox-container" v-for="g in genres" v-bind:key="g.genreId">
+          <label class="checkbox genre-checkbox">
+            <input class="dad" type="checkbox" v-model="filtresGenres" v-bind:value="g.genreId" :aria-required="true" />
+            <span class="genre-label">{{ g.name }}</span>
           </label>
         </div>
       </div>
@@ -144,8 +143,8 @@ export default {
 
       return animesFiltres;
     },
-    
-    animesPagines() { 
+
+    animesPagines() {
       const debut = (this.pageCourante - 1) * Number(this.nbAnimesParPage);
       const fin = debut + Number(this.nbAnimesParPage);
       const animesP = this.animesFiltres.slice(debut, fin);
@@ -202,5 +201,62 @@ export default {
 <style scoped>
 .dad {
   margin: 10px;
+}
+</style>
+
+<style scoped>
+.genre-panel {
+  padding: 20px;
+}
+
+.genre-panel-container {
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.genre-panel-heading {
+  font-family: 'Roboto', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  background-color: #7f7f7f;
+  color: white;
+  border-radius: 10px 10px 0 0;
+  padding: 10px 20px;
+}
+
+.columns {
+  margin-top: 10px;
+}
+
+.genre-checkbox-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.genre-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+}
+
+.genre-checkbox input[type="checkbox"] {
+  margin-right: 10px;
+  accent-color: #00d1b2;
+}
+
+.genre-label {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  color: #4a4a4a;
+  transition: color 0.3s ease;
+}
+
+.genre-checkbox input[type="checkbox"]:checked+.genre-label {
+  color: #00d1b2;
+  font-weight: 600;
 }
 </style>
