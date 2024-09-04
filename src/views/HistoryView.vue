@@ -1,75 +1,60 @@
 <template>
-    <div class="section" role="main">
+    <div class="section history-section" role="main">
         <div id="app" class="container" v-if="animes !== null">
             <div class="columns is-centered">
-                <h1 class="title is-1" role="heading">
+                <h1 class="title is-1 history-title" role="heading">
                     History
                 </h1>
             </div>
 
-            <br><br><br>
-
-            <div class="row columns is-multiline is-mobile ">
-                <div class="column is-4-desktop is-4-tablet is-6-mobile" v-for="e in animesFiltres"
-                    v-bind:key="e.episodeId">
-                    <div class="card ">
-                        <router-link v-bind:to="{
-            name: 'JouerEpisodeView',
-            params: { episodeId: e.episodeId }
-        }">
+            <div class="row columns is-multiline is-mobile anime-grid">
+                <div class="column is-4-desktop is-4-tablet is-6-mobile" v-for="e in animesFiltres" :key="e.episodeId">
+                    <div class="card anime-card">
+                        <router-link :to="{ name: 'JouerEpisodeView', params: { episodeId: e.episodeId } }">
                             <div class="card-image">
                                 <figure class="image">
-                                    <img v-bind:src="e.imgURL" v-bind:alt="e.episodeTitle" />
+                                    <img :src="e.imgURL" :alt="e.episodeTitle" class="anime-image" />
                                 </figure>
                             </div>
                         </router-link>
-                        <div class="card-content ">
+                        <div class="card-content">
                             <div class="media">
                                 <div class="media-content">
-                                    <router-link v-bind:to="{
-            name: 'DetailsView',
-            params: { animesId: e.tvshowId }
-        }">
-                                        <p class="title is-4 no-padding has-text-centered has-text-link"> {{
-            e.tvshowTitle }}</p>
+                                    <router-link :to="{ name: 'DetailsView', params: { animesId: e.tvshowId } }">
+                                        <p class="title is-5 has-text-centered has-text-link">{{ e.tvshowTitle }}</p>
                                     </router-link>
-                                    <router-link v-bind:to="{
-            name: 'SeasonEpisodesView',
-            params: { seasonId: e.seasonId }
-        }">
-                                        <p class="title is-4 no-padding has-text-centered has-text-link">Season {{
+                                    <router-link :to="{ name: 'SeasonEpisodesView', params: { seasonId: e.seasonId } }">
+                                        <p class="subtitle is-6 has-text-centered has-text-link">Season {{
             e.seasonNumber }}</p>
                                     </router-link>
-                                    <router-link v-bind:to="{
-            name: 'DetailsEpisodeView',
-            params: { episodeId: e.episodeId }
-        }">
-                                        <p class="title is-4 no-padding has-text-centered has-text-link">{{
-            e.episodeTitle }}</p>
+                                    <router-link
+                                        :to="{ name: 'DetailsEpisodeView', params: { episodeId: e.episodeId } }">
+                                        <p class="subtitle is-6 has-text-centered has-text-link">{{ e.episodeTitle }}
+                                        </p>
                                     </router-link>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
             </div>
-            <nav class="pagination" role="navigation" aria-label="pagination">
-                <a v-bind:class="pageCourante == 1 ? 'pagination-previous is-disabled' : 'pagination-previous'"
-                    v-on:click="previous" role="button" tabindex="0"><i class="fa fa-arrow-left"></i></a>
-                <a v-bind:class="pageCourante >= (animes.length / nbAnimesParPage) ? 'pagination-next is-disabled' : 'pagination-next'"
-                    v-on:click="next" role="button" tabindex="0"><i class="fa fa-arrow-right"></i></a>
+
+            <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+                <a :class="pageCourante === 1 ? 'pagination-previous is-disabled' : 'pagination-previous'"
+                    @click="previous" role="button" tabindex="0">
+                    <i class="fa fa-arrow-left"></i>
+                </a>
+                <a :class="pageCourante >= (animes.length / nbAnimesParPage) ? 'pagination-next is-disabled' : 'pagination-next'"
+                    @click="next" role="button" tabindex="0">
+                    <i class="fa fa-arrow-right"></i>
+                </a>
                 <ul class="pagination-list">
-                    <li v-for="p in nbPages" v-bind:key="p.id">
-                        <a v-bind:class="p == pageCourante ? 'pagination-link is-current' : 'pagination-link'"
-                            aria-label="Page 1" aria-current="page" role="button" tabindex="0"
-                            v-on:click="getNbPage(p)">{{ p }}</a>
+                    <li v-for="p in nbPages" :key="p">
+                        <a :class="p === pageCourante ? 'pagination-link is-current' : 'pagination-link'"
+                            @click="getNbPage(p)" role="button" tabindex="0">{{ p }}</a>
                     </li>
                 </ul>
             </nav>
-
-
         </div>
     </div>
 </template>
@@ -89,32 +74,20 @@ export default {
     data() {
         return {
             animes: null,
-
             nbAnimesParPage: 6,
             pageCourante: 1,
         };
     },
     computed: {
-
         animesFiltres() {
-            let animesFiltres = this.animes;
-            const debut = (this.pageCourante - 1) * Number(this.nbAnimesParPage);
-            const fin = debut + Number(this.nbAnimesParPage);
-            animesFiltres = this.animes.slice(debut, fin);
-            return animesFiltres;
-        },
-
-        nbPages() {
-            return Math.ceil(this.animes.length / this.nbAnimesParPage);
-        },
-
-        animesPagines() {
-            const debut = (this.pageCourante - 1) * Number(this.nbAnimesParPage);
-            const fin = debut + Number(this.nbAnimesParPage);
+            const debut = (this.pageCourante - 1) * this.nbAnimesParPage;
+            const fin = debut + this.nbAnimesParPage;
             return this.animes.slice(debut, fin);
         },
+        nbPages() {
+            return Math.ceil(this.animes.length / this.nbAnimesParPage);
+        }
     },
-
     async mounted() {
         this.getAnimes();
     },
@@ -122,11 +95,10 @@ export default {
         async getAnimes() {
             const token = this.store.token;
             const bearerToken = `bearer ${token}`;
-            const response = await fetch(`${svrURL}/user/history`,
-                {
-                    method: "GET",
-                    headers: { authorization: bearerToken },
-                });
+            const response = await fetch(`${svrURL}/user/history`, {
+                method: "GET",
+                headers: { authorization: bearerToken },
+            });
             if (response.ok) {
                 this.animes = await response.json();
                 this.storeHistory.history = this.animes;
@@ -134,46 +106,65 @@ export default {
                 console.error("API DOWN, TRY AGAIN LATER");
             }
         },
-
-        async getNbPage(x) {
-            return this.pageCourante = x;
+        getNbPage(x) {
+            this.pageCourante = x;
         },
-        async previous() {
+        previous() {
             if (this.pageCourante > 1) {
-                return this.pageCourante -= 1;
+                this.pageCourante -= 1;
             }
         },
-        async next() {
+        next() {
             if (this.pageCourante < this.animes.length / this.nbAnimesParPage) {
-                return this.pageCourante += 1;
+                this.pageCourante += 1;
             }
-        },
-    },
+        }
+    }
 };
 </script>
 
 <style scoped>
-h1 {
-    text-align: center;
+.history-section {
+    padding-top: 40px;
 }
 
-div.scrollmenu {
+.history-title {
+    font-weight: 700;
+    color: #363636;
+}
+
+.anime-grid {
+    margin-top: 30px;
+}
+
+.anime-card {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
     overflow: hidden;
-    /* Add vertical scrollbar */
-    overflow-x: auto;
-    /* Hide horizontal scrollbar */
-    white-space: nowrap;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-div.scrollmenu a {
-    display: inline-block;
-    color: white;
-    text-align: center;
-    padding: 14px;
-    text-decoration: none;
+.anime-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
-div.scrollmenu a:hover {
-    background-color: #777;
+.anime-image {
+    border-radius: 10px 10px 0 0;
+    height: 250px;
+    object-fit: cover;
+}
+
+.pagination {
+    margin-top: 40px;
+}
+
+.pagination-list li a {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 </style>
