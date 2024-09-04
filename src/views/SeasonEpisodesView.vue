@@ -1,17 +1,20 @@
 <template>
     <div class="section">
         <div id="app" class="container" v-if="animes !== null" role="main">
+            <!-- Titre de la série -->
             <div class="columns is-centered">
-                <h1 class="title is-1">{{ animes.tvshowTitle }}</h1>
+                <h1 class="title is-1 tvshow-title">{{ animes.tvshowTitle }}</h1>
             </div>
+
+            <!-- Numéro de la saison -->
+            <div class="columns is-centered">
+                <h2 class="subtitle is-2 season-number">Season {{ animes.seasonNumber }}</h2>
+            </div>
+
             <br /><br />
-            <div class="columns is-centered">
-                <h1 class="title is-1">{{ animes.seasonNumber }}</h1>
-            </div>
 
-            <br /><br /><br />
-
-            <div class="row columns is-multiline is-mobile" role="list">
+            <!-- Liste des épisodes -->
+            <div class="columns is-multiline is-mobile episode-list" role="list">
                 <EpisodeSaisonView v-for="anime in animesFiltres" :key="anime.episodeId" :animesFiltres="[anime]"
                     :storeHistory="storeHistory" />
             </div>
@@ -39,7 +42,7 @@
                 <div class="field is-horizontal" style="padding-left: 20px">
                     <div class="field-label is-normal">
                         <label class="label" for="taillePage" style="min-width: 150px">
-                            Animes par page
+                            Animes per page
                         </label>
                     </div>
                 </div>
@@ -177,5 +180,29 @@ div.scrollmenu a:hover {
     box-shadow: none;
     color: #7a7a7a;
     opacity: 0.5;
+}
+
+.tvshow-title {
+    text-align: center;
+    color: #363636;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.season-number {
+    text-align: center;
+    color: #4a4a4a;
+    font-weight: 600;
+}
+
+.episode-list {
+    padding-top: 30px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.section {
+    padding: 40px 0;
 }
 </style>
