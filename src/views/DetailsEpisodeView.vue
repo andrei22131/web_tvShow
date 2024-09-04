@@ -16,12 +16,24 @@
             <div class="columns is-centered">
                 <div class="column is-6 has-text-centered episode-info">
                     <p class="runtime" role="status">
-                        Durée : {{ animes.runtime }} minutes
+                        Duration : {{ animes.runtime }} minutes
                     </p>
                     <p class="tv-guideline">
                         Classification : {{ animes.tvParentalGuideline }}
                     </p>
                 </div>
+            </div>
+
+            <div class="columns is-centered">
+                <router-link :to="{ name: 'JouerEpisodeView', params: { episodeId: animes.episodeId } }"
+                    class="play-button">
+                    <div class="image-container">
+                        <img v-bind:src="animes.imgURL" v-bind:alt="animes.title" role="img" class="episode-image" />
+                        <div class="play-overlay">
+                            <span class="play-icon"></span>
+                        </div>
+                    </div>
+                </router-link>
             </div>
 
             <div class="columns is-centered">
@@ -32,12 +44,7 @@
                 </div>
             </div>
 
-            <div class="columns is-centered">
-                <router-link :to="{ name: 'JouerEpisodeView', params: { episodeId: animes.episodeId } }"
-                    class="play-button">
-                    <img v-bind:src="animes.imgURL" v-bind:alt="animes.title" role="img" class="episode-image" />
-                </router-link>
-            </div>
+
         </div>
     </div>
 </template>
@@ -113,16 +120,37 @@ export default {
     text-align: center;
 }
 
-.episode-image {
-    border-radius: 15px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.image-container {
+    position: relative;
     width: 100%;
-    max-width: 500px;
-    height: auto;
+    max-width: 600px;
+    /* Increased max-width for a bigger image */
 }
 
-.play-button img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+.episode-image {
+    border-radius: 15px;
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+}
+
+.play-icon {
+    width: 60px;
+    height: 60px;
+    background-color: white;
+    clip-path: polygon(25% 20%, 75% 50%, 25% 80%);
 }
 </style>
