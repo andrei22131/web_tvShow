@@ -23,17 +23,17 @@
             </div>
         </div>
 
-        <div class="actors-section">
-            <h2 class="section-title">Actors</h2>
-            <div class="row columns is-multiline is-mobile">
-                <ActeursView v-bind:acteur="animes" />
-            </div>
-        </div>
-
         <div class="seasons-section">
             <h2 class="section-title">Seasons</h2>
             <div class="columns is-mobile scrollmenu">
                 <SaisonView v-bind:anime="animes" />
+            </div>
+        </div>
+
+        <div class="actors-section">
+            <h2 class="section-title">Actors</h2>
+            <div class="row columns is-multiline is-mobile">
+                <ActeursView v-bind:acteur="animes" />
             </div>
         </div>
 
