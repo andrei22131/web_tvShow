@@ -30,9 +30,11 @@
                         v-bind:to="{ name: 'home' }" v-on:click="deleteToken" role="button">
                         Logout
                     </router-link>
+                    <!--
                     <router-link class="button is-info is-light is-rounded" v-bind:to="{ name: 'home' }" role="button">
                         About
                     </router-link>
+                    -->
                 </div>
             </div>
         </div>
