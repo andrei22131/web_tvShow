@@ -1,25 +1,24 @@
 <template>
     <div class="container">
-        <div class="section">
+        <div class="login-box">
             <div class="content">
                 <div class="columns is-centered">
-                    <h1 class="title is-2">
+                    <h1 class="title is-2 has-text-centered">
                         Login
                     </h1>
                 </div>
-                <div v-if="errorMessage.length !== 0" class="block">
-                    <div class="title is-3 boiteRouge" tabindex="0" role="alert" id="errorDiv" ref="errorDiv">
-                        <span v-for="error in errorMessage" v-bind:key="error">
-                            {{ error }}
-                            <br />
-                        </span>
-                    </div>
+                <div v-if="errorMessage.length !== 0" class="notification is-danger" tabindex="0" role="alert"
+                    id="errorDiv" ref="errorDiv">
+                    <span v-for="error in errorMessage" v-bind:key="error">
+                        {{ error }}
+                        <br />
+                    </span>
                 </div>
                 <div class="field">
                     <label for="email" class="label">Username</label>
                     <div class="control has-icons-left">
-                        <input id="email" type="email" placeholder="e1234567@site.com" class="input" autocomplete="email"
-                            aria-required="true" v-model="username" />
+                        <input id="email" type="email" placeholder="e1234567@site.com" class="input"
+                            autocomplete="email" aria-required="true" v-model="username" />
                         <span class="icon is-small is-left"><i class="fa fa-envelope"></i></span>
                     </div>
                 </div>
@@ -32,19 +31,19 @@
                     </div>
                 </div>
                 <div class="field">
-                    <label class="label"></label>
-                    <div class="control">
-                        <button id="connexion" class="button is-success" v-on:click="getToken">Connexion</button>
-                        <button id="annuler" class="button is-danger" v-on:click="annuler">Annuler</button>
+                    <div class="control buttons-group">
+                        <button id="connexion" class="button is-primary is-fullwidth"
+                            v-on:click="getToken">Login</button>
+                        <button id="annuler" class="button is-light is-fullwidth mt-2"
+                            v-on:click="annuler">Cancel</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
-    
-<script>
 
+<script>
 import { svrURL } from "@/constants";
 import { myStore } from "@/stores/counter";
 
@@ -123,7 +122,55 @@ export default {
 </script>
 
 <style scoped>
-.boiteRouge {
-    border: 2px solid red;
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f7fb;
+}
+
+.login-box {
+    background: white;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.title {
+    color: #333;
+}
+
+.notification.is-danger {
+    background-color: #ffdddd;
+    color: #a94442;
+    border: 1px solid #ebccd1;
+    border-radius: 5px;
+    padding: 1rem;
+}
+
+.input {
+    border-radius: 5px;
+}
+
+.input:focus {
+    border-color: #3273dc;
+    box-shadow: 0 0 0 0.125em rgba(50, 115, 220, 0.25);
+}
+
+.buttons-group .button {
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.buttons-group .button:hover {
+    background-color: #276cda;
+    color: white;
+}
+
+.buttons-group .button.is-light:hover {
+    background-color: #f0f0f0;
 }
 </style>
