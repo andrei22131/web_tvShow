@@ -82,32 +82,32 @@ export default {
     },
     methods: {
         async getToken() {
-            let valide = true;
+            let valid = true;
             this.errorMessage = [];
 
             const r1 = /^.+@.+$/;
             if (!r1.test(this.email)) {
-                this.errorMessage.push("Le courriel doit contenir un '@'.");
-                valide = false;
+                this.errorMessage.push("The email must contain an '@'.");
+                valid = false;
             }
             const r2 = /^.{5,50}$/;
             if (!r2.test(this.email)) {
-                this.errorMessage.push("Le courriel doit contenir entre 5 et 50 caractères.");
-                valide = false;
+                this.errorMessage.push("The email must be between 5 and 50 characters.");
+                valid = false;
             }
             const r3 = /^[a-zA-Z][a-zA-Z0-9_]{4,19}$/;
             if (!r3.test(this.username)) {
-                this.errorMessage.push("Le username doit commencer par une lettre, contenir entre 5 et 20 caractères et doit être composé de lettres majuscules, minuscules, de chiffres et/ou du caractère souligné (_).");
-                valide = false;
+                this.errorMessage.push("The username must start with a letter, contain between 5 and 20 characters, and be made up of uppercase, lowercase letters, digits, and/or underscores (_).");
+                valid = false;
             }
             const r4 = /^.{8,30}$/;
             if (!r4.test(this.password)) {
-                this.errorMessage.push("Le mot de passe doit contenir entre 8 et 30 caractères.");
-                valide = false;
+                this.errorMessage.push("The password must be between 8 and 30 characters.");
+                valid = false;
             }
             if (this.password !== this.password_match) {
-                this.errorMessage.push("Le mot de passe de confirmation doit être identique au mot de passe.");
-                valide = false;
+                this.errorMessage.push("The confirmation password must match the password.");
+                valid = false;
             }
             let a = await this.sha1(this.password);
             let b = a.slice(0, 5);
@@ -115,8 +115,8 @@ export default {
             await this.getPwned(b);
             for (let i = 0; i < this.pwned.length; i++) {
                 if (a.toUpperCase() === this.pwned[i].sha1) {
-                    valide = false;
-                    this.errorMessage.push("Le mot de passe est compromettant, veuillez le changer.");
+                    valid = false;
+                    this.errorMessage.push("The password is compromised, please change it.");
                     break;
                 }
             }
@@ -131,7 +131,7 @@ export default {
                 }),
             });
 
-            if (response.ok && valide == true) {
+            if (response.ok && valid == true) {
                 const data = await response.json();
                 this.store.username = data.username;
                 this.$router.push("/login");
