@@ -1,212 +1,215 @@
 <template>
     <div class="container">
-      <div class="signup-box">
-        <div class="content">
-          <div class="columns is-centered">
-            <h1 class="title is-2 has-text-centered" role="heading">
-              Sign Up
-            </h1>
-          </div>
-          <div v-if="errorMessage.length !== 0" class="notification is-danger" tabindex="0" role="alert" id="errorDiv" ref="errorDiv">
-            <span v-for="error in errorMessage" v-bind:key="error">
-              {{ error }}
-              <br />
-            </span>
-          </div>
-          <div class="field">
-            <label for="email" class="label">Email</label>
-            <div class="control has-icons-left">
-              <input id="email" type="email" placeholder="e1234567@site.com" class="input" autocomplete="email"
-                required v-model="email" aria-required="true" />
-              <span class="icon is-small is-left"><i class="fa fa-envelope"></i></span>
+        <div class="signup-box">
+            <div class="content">
+                <div class="columns is-centered">
+                    <h1 class="title is-2 has-text-centered" role="heading">
+                        Sign Up
+                    </h1>
+                </div>
+                <div v-if="errorMessage.length !== 0" class="notification is-danger" tabindex="0" role="alert"
+                    id="errorDiv" ref="errorDiv">
+                    <span v-for="error in errorMessage" v-bind:key="error">
+                        {{ error }}
+                        <br />
+                    </span>
+                </div>
+                <div class="field">
+                    <label for="email" class="label">Email</label>
+                    <div class="control has-icons-left">
+                        <input id="email" type="email" placeholder="e1234567@site.com" class="input"
+                            autocomplete="email" required v-model="email" aria-required="true" />
+                        <span class="icon is-small is-left"><i class="fa fa-envelope"></i></span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="username" class="label">Username</label>
+                    <div class="control has-icons-left">
+                        <input id="username" type="text" placeholder="e1234567" class="input" autocomplete="username"
+                            required v-model="username" aria-required="true">
+                        <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="password" class="label">Password</label>
+                    <div class="control has-icons-left">
+                        <input id="password" type="password" placeholder="*******" class="input"
+                            autocomplete="new-password" required v-model="password" aria-describedby="password-error"
+                            aria-required="true">
+                        <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="password_match" class="label">Confirm Password</label>
+                    <div class="control has-icons-left">
+                        <input id="password_match" type="password" placeholder="*******" class="input"
+                            autocomplete="new-password" required v-model="password_match" aria-required="true">
+                        <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control buttons-group">
+                        <button id="connexion" class="button is-primary is-fullwidth" v-on:click="getToken">Sign
+                            Up</button>
+                        <button id="annuler" class="button is-light is-fullwidth mt-2"
+                            v-on:click="this.$router.push('/')">Cancel</button>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="field">
-            <label for="username" class="label">Username</label>
-            <div class="control has-icons-left">
-              <input id="username" type="text" placeholder="e1234567" class="input" autocomplete="username"
-                required v-model="username" aria-required="true">
-              <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
-            </div>
-          </div>
-          <div class="field">
-            <label for="password" class="label">Password</label>
-            <div class="control has-icons-left">
-              <input id="password" type="password" placeholder="*******" class="input" autocomplete="new-password"
-                required v-model="password" aria-describedby="password-error" aria-required="true">
-              <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
-            </div>
-          </div>
-          <div class="field">
-            <label for="password_match" class="label">Confirm Password</label>
-            <div class="control has-icons-left">
-              <input id="password_match" type="password" placeholder="*******" class="input" autocomplete="new-password"
-                required v-model="password_match" aria-required="true">
-              <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
-            </div>
-          </div>
-          <div class="field">
-            <div class="control buttons-group">
-              <button id="connexion" class="button is-primary is-fullwidth" v-on:click="getToken">Sign Up</button>
-              <button id="annuler" class="button is-light is-fullwidth mt-2" v-on:click="this.$router.push('/')">Cancel</button>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </template>
-  
-  <script>
-  import { svrURL } from "@/constants";
-  import { myStore } from "@/stores/counter";
-  
-  export default {
+</template>
+
+<script>
+import { svrURL } from "@/constants";
+import { myStore } from "@/stores/counter";
+
+export default {
     name: "SignUp",
     setup() {
-      const store = myStore();
-      return { store };
+        const store = myStore();
+        return { store };
     },
     data() {
-      return {
-        email: null,
-        username: null,
-        password: null,
-        password_match: null,
-        errorMessage: [],
-        pwned: [],
-      };
+        return {
+            email: null,
+            username: null,
+            password: null,
+            password_match: null,
+            errorMessage: [],
+            pwned: [],
+        };
     },
     methods: {
-      async getToken() {
-        let valide = true;
-        this.errorMessage = [];
-  
-        const r1 = /^.+@.+$/;
-        if (!r1.test(this.email)) {
-          this.errorMessage.push("Le courriel doit contenir un '@'.");
-          valide = false;
-        }
-        const r2 = /^.{5,50}$/;
-        if (!r2.test(this.email)) {
-          this.errorMessage.push("Le courriel doit contenir entre 5 et 50 caractères.");
-          valide = false;
-        }
-        const r3 = /^[a-zA-Z][a-zA-Z0-9_]{4,19}$/;
-        if (!r3.test(this.username)) {
-          this.errorMessage.push("Le username doit commencer par une lettre, contenir entre 5 et 20 caractères et doit être composé de lettres majuscules, minuscules, de chiffres et/ou du caractère souligné (_).");
-          valide = false;
-        }
-        const r4 = /^.{8,30}$/;
-        if (!r4.test(this.password)) {
-          this.errorMessage.push("Le mot de passe doit contenir entre 8 et 30 caractères.");
-          valide = false;
-        }
-        if (this.password !== this.password_match) {
-          this.errorMessage.push("Le mot de passe de confirmation doit être identique au mot de passe.");
-          valide = false;
-        }
-        let a = await this.sha1(this.password);
-        let b = a.slice(0, 5);
-  
-        await this.getPwned(b);
-        for (let i = 0; i < this.pwned.length; i++) {
-          if (a.toUpperCase() === this.pwned[i].sha1) {
-            valide = false;
-            this.errorMessage.push("Le mot de passe est compromettant, veuillez le changer.");
-            break;
-          }
-        }
-  
-        const response = await fetch(`${svrURL}/auth/register`, {
-          headers: { "Content-Type": "application/json" },
-          method: "POST",
-          body: JSON.stringify({
-            username: this.username,
-            email: this.email,
-            password: this.password,
-          }),
-        });
-  
-        if (response.ok && valide == true) {
-          const data = await response.json();
-          this.store.username = data.username;
-          this.$router.push("/login");
-        } else {
-          this.$nextTick(() => {
-            this.$refs.errorDiv.focus();
-          });
-        }
-      },
-      async sha1(message) {
-        const msgUint8 = new TextEncoder().encode(message);
-        const hashBuffer = await crypto.subtle.digest("SHA-1", msgUint8);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        const hashHex = hashArray
-          .map((b) => b.toString(16).padStart(2, "0"))
-          .join("");
-        return hashHex;
-      },
-      async getPwned(a) {
-        const response = await fetch(`https://pwnedpasswords.herokuapp.com/api/v1/range?firstfive=${a}&key=9bc96211-6977-4970-a3de-c913ec9d17f7`);
-        if (response.ok) {
-          this.pwned = await response.json();
-        }
-      },
+        async getToken() {
+            let valide = true;
+            this.errorMessage = [];
+
+            const r1 = /^.+@.+$/;
+            if (!r1.test(this.email)) {
+                this.errorMessage.push("Le courriel doit contenir un '@'.");
+                valide = false;
+            }
+            const r2 = /^.{5,50}$/;
+            if (!r2.test(this.email)) {
+                this.errorMessage.push("Le courriel doit contenir entre 5 et 50 caractères.");
+                valide = false;
+            }
+            const r3 = /^[a-zA-Z][a-zA-Z0-9_]{4,19}$/;
+            if (!r3.test(this.username)) {
+                this.errorMessage.push("Le username doit commencer par une lettre, contenir entre 5 et 20 caractères et doit être composé de lettres majuscules, minuscules, de chiffres et/ou du caractère souligné (_).");
+                valide = false;
+            }
+            const r4 = /^.{8,30}$/;
+            if (!r4.test(this.password)) {
+                this.errorMessage.push("Le mot de passe doit contenir entre 8 et 30 caractères.");
+                valide = false;
+            }
+            if (this.password !== this.password_match) {
+                this.errorMessage.push("Le mot de passe de confirmation doit être identique au mot de passe.");
+                valide = false;
+            }
+            let a = await this.sha1(this.password);
+            let b = a.slice(0, 5);
+
+            await this.getPwned(b);
+            for (let i = 0; i < this.pwned.length; i++) {
+                if (a.toUpperCase() === this.pwned[i].sha1) {
+                    valide = false;
+                    this.errorMessage.push("Le mot de passe est compromettant, veuillez le changer.");
+                    break;
+                }
+            }
+
+            const response = await fetch(`${svrURL}/auth/register`, {
+                headers: { "Content-Type": "application/json" },
+                method: "POST",
+                body: JSON.stringify({
+                    username: this.username,
+                    email: this.email,
+                    password: this.password,
+                }),
+            });
+
+            if (response.ok && valide == true) {
+                const data = await response.json();
+                this.store.username = data.username;
+                this.$router.push("/login");
+            } else {
+                this.$nextTick(() => {
+                    this.$refs.errorDiv.focus();
+                });
+            }
+        },
+        async sha1(message) {
+            const msgUint8 = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest("SHA-1", msgUint8);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray
+                .map((b) => b.toString(16).padStart(2, "0"))
+                .join("");
+            return hashHex;
+        },
+        async getPwned(a) {
+            const response = await fetch(`https://pwnedpasswords.herokuapp.com/api/v1/range?firstfive=${a}&key=9bc96211-6977-4970-a3de-c913ec9d17f7`);
+            if (response.ok) {
+                this.pwned = await response.json();
+            }
+        },
     },
-  };
-  </script>
-  
-  <style scoped>
-  .container {
+};
+</script>
+
+<style scoped>
+.container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     background-color: #f4f7fb;
-  }
-  
-  .signup-box {
+}
+
+.signup-box {
     background: white;
     padding: 3rem;
     border-radius: 8px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
-  }
-  
-  .title {
+}
+
+.title {
     color: #333;
-  }
-  
-  .notification.is-danger {
+}
+
+.notification.is-danger {
     background-color: #ffdddd;
     color: #a94442;
     border: 1px solid #ebccd1;
     border-radius: 5px;
     padding: 1rem;
-  }
-  
-  .input {
+}
+
+.input {
     border-radius: 5px;
-  }
-  
-  .input:focus {
+}
+
+.input:focus {
     border-color: #3273dc;
     box-shadow: 0 0 0 0.125em rgba(50, 115, 220, 0.25);
-  }
-  
-  .buttons-group .button {
+}
+
+.buttons-group .button {
     border-radius: 5px;
     transition: background-color 0.3s ease;
-  }
-  
-  .buttons-group .button:hover {
+}
+
+.buttons-group .button:hover {
     background-color: #276cda;
     color: white;
-  }
-  
-  .buttons-group .button.is-light:hover {
+}
+
+.buttons-group .button.is-light:hover {
     background-color: #f0f0f0;
-  }
-  </style>
-  
+}
+</style>
