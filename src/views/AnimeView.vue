@@ -64,7 +64,7 @@ export default {
 .anime-card-figure {
     height: 250px;
     overflow: hidden;
-    border-bottom: 2px solid #f5f5f5;
+    border-bottom: 4px solid #00d1b2;
 }
 
 .anime-card-figure img {
