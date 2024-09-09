@@ -8,7 +8,7 @@
         <div class="field-body">
           <div class="field">
             <p class="control is-expanded">
-              <input v-model="filtreTitre" id="titre" class="input" type="text" placeholder="Titre de l'anime">
+              <input v-model="filtreTitre" id="titre" class="input" type="text" placeholder="Title of the anime">
             </p>
           </div>
         </div>
@@ -72,7 +72,7 @@
       <div class="field is-horizontal" style="padding-left:20px">
         <div class="field-label is-normal">
           <label class="label" for="taillePage" style="min-width: 150px">
-            Animes par page
+            Anime per page
           </label>
         </div>
         <div class="field-body" role="presentation">
