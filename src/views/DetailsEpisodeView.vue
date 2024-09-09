@@ -39,7 +39,7 @@
             <div class="columns is-centered">
                 <div class="column is-8">
                     <p class="plot-description" aria-describedby="plot-description">
-                        {{ animes.plot }}
+                        <b>Description: </b>{{ animes.plot }}
                     </p>
                 </div>
             </div>
