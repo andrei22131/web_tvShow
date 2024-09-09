@@ -35,7 +35,7 @@
                         <button id="connexion" class="button is-primary is-fullwidth"
                             v-on:click="getToken">Login</button>
                         <button id="annuler" class="button is-light is-fullwidth mt-2"
-                            v-on:click="cancel">Cancel</button>
+                            v-on:click="annuler">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -69,7 +69,7 @@ export default {
                 this.username = this.store.username;
             }
         },
-        cancel() {
+        annuler() {
             this.store.username = "";
             this.$router.push("/");
         },
@@ -78,12 +78,12 @@ export default {
             this.errorMessage = [];
 
             if (!this.username) {
-                this.errorMessage.push("Username is required.");
+                this.errorMessage.push("The username is required.");
                 valid = false;
             }
 
             if (!this.password) {
-                this.errorMessage.push("Password is required.");
+                this.errorMessage.push("The password is required");
                 valid = false;
             }
 
@@ -101,11 +101,11 @@ export default {
                     this.store.token = data.token;
                     this.store.username = "";
                     sessionStorage.setItem("token", data.token);
-                    this.store.addToken(sessionStorage.getItem("token"));
+                    this.store.ajoutToken(sessionStorage.getItem("token"));
                     this.$router.push("/");
                     console.log(this.store.token);
                 } else {
-                    this.errorMessage.push("Incorrect username or password.");
+                    this.errorMessage.push("Wrong username or password.");
                     this.$nextTick(() => {
                         this.$refs.errorDiv.focus();
                     });
